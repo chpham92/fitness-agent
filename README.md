@@ -74,6 +74,7 @@ rejected at that boundary, not caught downstream.
 | `GET /health` | Liveness check |
 | `POST /chat` | `{user_id, message}` → runs one full agent turn → validated `WorkoutPlanResponse` JSON |
 | `POST /chat/stream` | Same turn, as Server-Sent Events — see event schema below |
+| `GET /` | HTML landing page — links to the repo and shows example curl commands for each endpoint |
 
 ### SSE event schema (`/chat/stream`)
 
