@@ -1,0 +1,15 @@
+.venv/
+.venv_clean_check/
+__pycache__/
+*.pyc
+.pytest_cache/
+*.db
+.env
+.git/
+.gitignore
+tests/
+README.md
+DEPLOY.md
+Dockerfile
+.dockerignore
+fly.toml

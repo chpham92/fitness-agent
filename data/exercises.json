@@ -1,0 +1,22 @@
+[
+  {"name": "Back Squat", "muscle_group": "quads", "equipment": "barbell", "description": "Barbell on upper back, squat to depth, drive through mid-foot."},
+  {"name": "Front Squat", "muscle_group": "quads", "equipment": "barbell", "description": "Barbell racked on front delts, more upright torso than back squat."},
+  {"name": "Romanian Deadlift", "muscle_group": "hamstrings", "equipment": "barbell", "description": "Hip hinge with slight knee bend, bar close to legs, stretch through the hamstrings."},
+  {"name": "Conventional Deadlift", "muscle_group": "hamstrings", "equipment": "barbell", "description": "Full hip hinge from the floor, posterior chain dominant."},
+  {"name": "Bench Press", "muscle_group": "chest", "equipment": "barbell", "description": "Flat barbell press, elbows tucked slightly, bar to sternum."},
+  {"name": "Incline Dumbbell Press", "muscle_group": "chest", "equipment": "dumbbell", "description": "Press on an incline bench, upper chest emphasis."},
+  {"name": "Barbell Row", "muscle_group": "back", "equipment": "barbell", "description": "Hinged bent-over row, pull to lower ribs."},
+  {"name": "Pull-Up", "muscle_group": "back", "equipment": "bodyweight", "description": "Overhand grip, chin over bar, full hang at bottom."},
+  {"name": "Lat Pulldown", "muscle_group": "back", "equipment": "cable", "description": "Cable machine pulldown, controlled eccentric."},
+  {"name": "Overhead Press", "muscle_group": "shoulders", "equipment": "barbell", "description": "Standing strict press, bar path close to the face."},
+  {"name": "Dumbbell Lateral Raise", "muscle_group": "shoulders", "equipment": "dumbbell", "description": "Isolation raise to shoulder height, light control."},
+  {"name": "Barbell Hip Thrust", "muscle_group": "glutes", "equipment": "barbell", "description": "Shoulders on bench, drive hips up, squeeze at top."},
+  {"name": "Walking Lunge", "muscle_group": "glutes", "equipment": "dumbbell", "description": "Alternating forward lunge, holding dumbbells at sides."},
+  {"name": "Plank", "muscle_group": "core", "equipment": "bodyweight", "description": "Forearm plank, neutral spine, brace throughout."},
+  {"name": "Hanging Leg Raise", "muscle_group": "core", "equipment": "bodyweight", "description": "Hang from bar, raise legs to hip height or above."},
+  {"name": "Barbell Curl", "muscle_group": "biceps", "equipment": "barbell", "description": "Standing curl, elbows pinned to sides."},
+  {"name": "Tricep Pushdown", "muscle_group": "triceps", "equipment": "cable", "description": "Cable pushdown, elbows locked to torso."},
+  {"name": "Kettlebell Swing", "muscle_group": "hamstrings", "equipment": "kettlebell", "description": "Ballistic hip hinge, power from the hips not the arms."},
+  {"name": "Goblet Squat", "muscle_group": "quads", "equipment": "kettlebell", "description": "Kettlebell held at chest, squat between the knees."},
+  {"name": "Farmer's Carry", "muscle_group": "core", "equipment": "dumbbell", "description": "Heavy carry, braced core, controlled walk."}
+]
