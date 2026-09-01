@@ -21,7 +21,7 @@ from contextlib import asynccontextmanager
 
 import anthropic
 from fastapi import FastAPI, HTTPException
-from fastapi.responses import StreamingResponse
+from fastapi.responses import HTMLResponse, StreamingResponse
 from pydantic import BaseModel, Field, field_validator
 
 from app.agent import AgentError, run_agent_loop, stream_agent_events
@@ -42,7 +42,71 @@ async def lifespan(app: FastAPI):
 
 
 app = FastAPI(title="Fitness Coaching Agent", lifespan=lifespan)
+GITHUB_REPO_URL = "https://github.com/chpham92/fitness-agent"
 
+LANDING_HTML = f"""<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Fitness Coaching Agent</title>
+<style>
+  :root {{ color-scheme: light dark; }}
+  body {{
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+    max-width: 720px; margin: 4rem auto; padding: 0 1.5rem;
+    line-height: 1.55; color: #1a1a1a;
+  }}
+  h1 {{ font-size: 1.5rem; margin-bottom: 0.25rem; }}
+  p.tagline {{ color: #555; margin-top: 0; }}
+  code, pre {{ background: #f4f4f4; border-radius: 6px; font-size: 0.85rem; }}
+  code {{ padding: 0.15rem 0.4rem; }}
+  pre {{ padding: 0.9rem 1rem; overflow-x: auto; }}
+  .endpoint {{ margin: 1.75rem 0; }}
+  .endpoint h2 {{ font-size: 1rem; margin-bottom: 0.4rem; }}
+  a {{ color: #0a5cd6; }}
+  footer {{ margin-top: 3rem; font-size: 0.85rem; color: #777; }}
+  @media (prefers-color-scheme: dark) {{
+    body {{ color: #e6e6e6; }}
+    p.tagline {{ color: #aaa; }}
+    code, pre {{ background: #1e1e1e; }}
+    a {{ color: #6ea8ff; }}
+    footer {{ color: #999; }}
+  }}
+</style>
+</head>
+<body>
+  <h1>Fitness Coaching Agent</h1>
+  <p class="tagline">
+    A tool-calling LLM agent (raw Anthropic Messages API, FastAPI, Pydantic,
+    SQLite) deployed live on Fly.io — not a notebook.
+  </p>
+  <div class="endpoint">
+    <h2>GET /health</h2>
+    <pre>curl https://fitness-coaching-agent.fly.dev/health</pre>
+  </div>
+  <div class="endpoint">
+    <h2>POST /chat</h2>
+    <pre>curl -X POST https://fitness-coaching-agent.fly.dev/chat \\
+  -H "Content-Type: application/json" \\
+  -d '{{"user_id": "demo", "message": "give me a quick upper body workout"}}'</pre>
+  </div>
+  <div class="endpoint">
+    <h2>POST /chat/stream (Server-Sent Events)</h2>
+    <pre>curl -N -X POST https://fitness-coaching-agent.fly.dev/chat/stream \\
+  -H "Content-Type: application/json" \\
+  -d '{{"user_id": "demo", "message": "give me a quick upper body workout"}}'</pre>
+  </div>
+  <footer>
+    <a href="{GITHUB_REPO_URL}">Source on GitHub</a>
+  </footer>
+</body>
+</html>"""
+
+
+@app.get("/", response_class=HTMLResponse)
+async def root():
+    return LANDING_HTML
 
 class ChatRequest(BaseModel):
     user_id: str
