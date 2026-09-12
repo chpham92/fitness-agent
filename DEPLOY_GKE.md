@@ -146,7 +146,9 @@ Then, in the GitHub repo settings:
   - `GCP_WIF_PROVIDER` — `projects/<PROJECT_NUMBER>/locations/global/workloadIdentityPools/github/providers/github`
   - `GCP_DEPLOY_SA` — `fitness-agent-deployer@<PROJECT_ID>.iam.gserviceaccount.com`
 - **Settings → Secrets and variables → Actions → Variables:**
-  - `GCP_PROJECT_ID`, `GCP_REGION` (`us-central1`), `GKE_CLUSTER_NAME` (`fitness-agent`)
+  - `GCP_PROJECT_ID`, `GCP_REGION` (`us-central1`, for Artifact Registry),
+    `GKE_LOCATION` (`us-central1-a` — the cluster is zonal, deliberately a
+    different value than `GCP_REGION`), `GKE_CLUSTER_NAME` (`fitness-agent`)
 
 Run it from the Actions tab → "Deploy to GKE" → Run workflow.
 

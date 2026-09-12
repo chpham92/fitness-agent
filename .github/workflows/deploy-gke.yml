@@ -12,7 +12,8 @@ on:
 
 env:
   PROJECT_ID: ${{ vars.GCP_PROJECT_ID }}
-  REGION: ${{ vars.GCP_REGION }}
+  REGION: ${{ vars.GCP_REGION }} # Artifact Registry is regional (us-central1)
+  GKE_LOCATION: ${{ vars.GKE_LOCATION }} # the cluster itself is zonal (us-central1-a) — deliberately not the same value as REGION
   CLUSTER: ${{ vars.GKE_CLUSTER_NAME }}
   REPO: fitness-agent
   IMAGE: fitness-agent
@@ -46,7 +47,7 @@ jobs:
       - uses: google-github-actions/get-gke-credentials@v2
         with:
           cluster_name: ${{ env.CLUSTER }}
-          location: ${{ env.REGION }}
+          location: ${{ env.GKE_LOCATION }}
 
       - name: Apply manifests and roll out the new image
         run: |
