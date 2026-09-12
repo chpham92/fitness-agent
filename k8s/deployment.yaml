@@ -68,16 +68,22 @@ spec:
             periodSeconds: 30
             timeoutSeconds: 5
             failureThreshold: 3
-          # Matches fly.toml's [[vm]] shared-cpu-1x / 256mb. Limit set above
-          # the request (not equal) so a transient spike doesn't get OOM-killed
-          # for doing the same work Fly's single shared vCPU already handles.
+          # Sized to what this app actually uses, not fly.toml's 250m/256mb
+          # verbatim: on a single e2-small node, GKE's own system daemonsets
+          # (kube-proxy, gke-metadata-server, metrics/logging agents, netd,
+          # konnectivity-agent) already claim ~753m of the node's 940m
+          # allocatable CPU — a 250m request left no room to schedule and
+          # the pod sat Pending. 100m is still generous for an idle-most-
+          # of-the-time FastAPI service whose real work is an outbound call
+          # to the Anthropic API, not local compute; the limit stays high
+          # enough to absorb a burst without OOM-kill.
           resources:
             requests:
-              cpu: "250m"
-              memory: "256Mi"
+              cpu: "100m"
+              memory: "200Mi"
             limits:
-              cpu: "1000m"
-              memory: "512Mi"
+              cpu: "500m"
+              memory: "384Mi"
       volumes:
         - name: data
           persistentVolumeClaim:
