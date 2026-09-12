@@ -1,0 +1,17 @@
+# ClusterIP, not LoadBalancer: a GCP Network LB bills hourly whether or not
+# it's serving traffic (~$18/mo just to exist). Reach the service via
+# `kubectl port-forward` for local verification/demos (see DEPLOY_GKE.md) or
+# add an Ingress on top of this Service if you decide you want a stable
+# public URL and are OK with that cost.
+apiVersion: v1
+kind: Service
+metadata:
+  name: fitness-agent
+  namespace: fitness-agent
+spec:
+  type: ClusterIP
+  selector:
+    app: fitness-agent
+  ports:
+    - port: 80
+      targetPort: 8000

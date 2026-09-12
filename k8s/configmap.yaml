@@ -1,0 +1,9 @@
+# Non-secret config only. ANTHROPIC_API_KEY lives in a Secret (see secret.example.yaml)
+# and is never checked into this file or git.
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: fitness-agent-config
+  namespace: fitness-agent
+data:
+  FITNESS_AGENT_MODEL: "claude-opus-5"

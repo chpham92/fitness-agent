@@ -1,0 +1,84 @@
+# replicas: 1 is deliberate, not a placeholder to raise later without other
+# changes. The app writes to a single SQLite file on a ReadWriteOnce volume
+# (see pvc.yaml) — SQLite allows one writer at a time, so a second replica
+# would either serialize on file locks (defeating the point of scaling) or
+# corrupt the db under concurrent writes, and RWO means a second pod can't
+# even mount the volume if it landed on a different node. Horizontal scaling
+# here requires externalizing state first (e.g. Cloud SQL for Postgres),
+# which is intentionally out of scope for this pass — see DEPLOY_GKE.md.
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: fitness-agent
+  namespace: fitness-agent
+spec:
+  replicas: 1
+  strategy:
+    # Recreate, not RollingUpdate: two pods can never both hold the RWO
+    # volume, so a rolling update would leave the incoming pod stuck
+    # Pending (volume still attached to the outgoing pod) until it's
+    # forcibly terminated anyway. Recreate makes that trade-off explicit
+    # instead of masking it as a hung rollout. Brief downtime per deploy
+    # is the accepted cost until state is externalized.
+    type: Recreate
+  selector:
+    matchLabels:
+      app: fitness-agent
+  template:
+    metadata:
+      labels:
+        app: fitness-agent
+    spec:
+      securityContext:
+        # Mirrors the Dockerfile's appuser (uid/gid 10001). The container
+        # itself still starts as root momentarily so docker-entrypoint.sh
+        # can chown a freshly mounted/empty volume before dropping to
+        # appuser via gosu — see the Dockerfile's comment on why a static
+        # `USER appuser` there wouldn't work. fsGroup ensures the volume
+        # is group-writable by 10001 regardless of who provisioned it.
+        fsGroup: 10001
+      containers:
+        - name: fitness-agent
+          image: fitness-agent  # replaced by kustomize/CI with the real registry path — see DEPLOY_GKE.md
+          ports:
+            - containerPort: 8000
+          envFrom:
+            - configMapRef:
+                name: fitness-agent-config
+            - secretRef:
+                name: fitness-agent-secrets
+          volumeMounts:
+            - name: data
+              mountPath: /data
+          # Same shape Fly's [[http_service.checks]] uses against the same
+          # /health endpoint (app/main.py) — grace_period there maps to
+          # initialDelaySeconds here.
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: 8000
+            initialDelaySeconds: 5
+            periodSeconds: 10
+            timeoutSeconds: 5
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 8000
+            initialDelaySeconds: 10
+            periodSeconds: 30
+            timeoutSeconds: 5
+            failureThreshold: 3
+          # Matches fly.toml's [[vm]] shared-cpu-1x / 256mb. Limit set above
+          # the request (not equal) so a transient spike doesn't get OOM-killed
+          # for doing the same work Fly's single shared vCPU already handles.
+          resources:
+            requests:
+              cpu: "250m"
+              memory: "256Mi"
+            limits:
+              cpu: "1000m"
+              memory: "512Mi"
+      volumes:
+        - name: data
+          persistentVolumeClaim:
+            claimName: fitness-agent-data

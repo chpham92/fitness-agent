@@ -1,0 +1,15 @@
+# Backs the same /data mount the Fly deployment uses for the SQLite file
+# (see fly.toml's [[mounts]] block and the Dockerfile's FITNESS_AGENT_DB).
+# ReadWriteOnce because SQLite is single-writer — see deployment.yaml's
+# replica-count comment for why this caps the Deployment at 1 replica.
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: fitness-agent-data
+  namespace: fitness-agent
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi

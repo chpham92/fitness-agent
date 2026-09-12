@@ -1,0 +1,59 @@
+name: Deploy to GKE
+
+# Manual trigger, not on every push to main: this Deployment uses
+# `strategy: Recreate` (see k8s/deployment.yaml) because SQLite on a
+# ReadWriteOnce volume can't support a second pod during rollout, so every
+# deploy has a brief availability gap. That's an acceptable trade for a
+# portfolio project but not something that should happen unattended on
+# every merge — see DEPLOY_GKE.md for the one-time setup this workflow
+# depends on (Workload Identity Federation, Artifact Registry repo, cluster).
+on:
+  workflow_dispatch: {}
+
+env:
+  PROJECT_ID: ${{ vars.GCP_PROJECT_ID }}
+  REGION: ${{ vars.GCP_REGION }}
+  CLUSTER: ${{ vars.GKE_CLUSTER_NAME }}
+  REPO: fitness-agent
+  IMAGE: fitness-agent
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write # required for Workload Identity Federation — no long-lived key checked in anywhere
+    steps:
+      - uses: actions/checkout@v4
+
+      - id: auth
+        uses: google-github-actions/auth@v2
+        with:
+          workload_identity_provider: ${{ secrets.GCP_WIF_PROVIDER }}
+          service_account: ${{ secrets.GCP_DEPLOY_SA }}
+
+      - uses: google-github-actions/setup-gcloud@v2
+
+      - run: gcloud auth configure-docker ${{ env.REGION }}-docker.pkg.dev --quiet
+
+      - name: Build and push image
+        run: |
+          IMAGE_URI="${{ env.REGION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/${{ env.REPO }}/${{ env.IMAGE }}:${{ github.sha }}"
+          docker build -t "$IMAGE_URI" .
+          docker push "$IMAGE_URI"
+          echo "IMAGE_URI=$IMAGE_URI" >> "$GITHUB_ENV"
+
+      - uses: google-github-actions/get-gke-credentials@v2
+        with:
+          cluster_name: ${{ env.CLUSTER }}
+          location: ${{ env.REGION }}
+
+      - name: Apply manifests and roll out the new image
+        run: |
+          kubectl apply -f k8s/namespace.yaml
+          kubectl apply -f k8s/configmap.yaml
+          kubectl apply -f k8s/pvc.yaml
+          kubectl apply -f k8s/service.yaml
+          kubectl apply -f k8s/deployment.yaml
+          kubectl set image deployment/fitness-agent fitness-agent="$IMAGE_URI" -n fitness-agent
+          kubectl rollout status deployment/fitness-agent -n fitness-agent --timeout=180s
