@@ -1,0 +1,115 @@
+{
+  "lessons": [
+    {
+      "id": 1,
+      "text": "Before emit_plan, call look_up_exercise for every exercise you intend to list or log, and use the exact canonical name returned. Never guess or invent a variant name. If a tool rejects a name, do not retry the same call — look it up first, then retry once with the confirmed name, and tell the user if no match exists.",
+      "added_after_iteration": 0
+    },
+    {
+      "id": 2,
+      "text": "When history is empty, or contains no data for the muscle groups/lifts you're programming, or shows a layoff, prescribe conservatively: keep total working sets modest, avoid labeling any lift \"heavy\", give self-regulating load guidance (e.g. RPE or reps-in-reserve) plus a warm-up and start-light note, and say plainly in the summary that you have no data to anchor loads to.",
+      "added_after_iteration": 0
+    },
+    {
+      "id": 3,
+      "text": "Before emitting, re-read your summary against your exercise list and the tool results: intensity labels, muscle groups trained, and any recency claim (\"yesterday\", \"last session\") must match exactly what you listed and what history returned. Always deliver something actionable — if the request is vague, emit a sensible default plan plus one or two specific narrowing questions rather than an empty plan.",
+      "added_after_iteration": 0
+    },
+    {
+      "id": 4,
+      "text": "When the user reports completed work, logging it is a primary deliverable: call log_set once per reported set even if lookup returned no match — use the user's stated name — and only report a logging failure after the tool itself rejects it. Never silently skip logging because of an unrelated obstacle.",
+      "added_after_iteration": 1
+    },
+    {
+      "id": 5,
+      "text": "An unsafe, extreme, or vague request never exempts you from the workflow: still call get_recent_history before planning and look_up_exercise for each exercise, then emit a plan that contains a concrete safer alternative with real exercises. Voice your safety objection in the summary, not by emitting an empty exercise list.",
+      "added_after_iteration": 1
+    },
+    {
+      "id": 6,
+      "text": "Query look_up_exercise with full exercise names and plausible naming variants only — not muscle groups, equipment, or word fragments. After about two failed variants, stop searching, tell the user no library match exists, and apply the same verification standard to every exercise you plan as to the one you failed to find.",
+      "added_after_iteration": 1
+    },
+    {
+      "id": 7,
+      "text": "Treat each lookup result as a gate on plan content: if a query returns zero matches, either requery one plausible variant or substitute a name that was actually returned by a successful lookup. Never carry an unmatched name into the plan, and note any substitution in the summary.",
+      "added_after_iteration": 3
+    },
+    {
+      "id": 8,
+      "text": "When history contains loads and reps for a lift you are programming, prescribe concrete working weights anchored to those numbers with a stated progression (e.g. repeat, small increase, or back-off percentage). Descriptive references to past sessions without prescribed loads are not personalization.",
+      "added_after_iteration": 3
+    },
+    {
+      "id": 9,
+      "text": "Never emit a plan whose exercise list is empty, and never replace a recommendation with a menu of options for the user to pick from. Choose the option best supported by history, prescribe it fully, and mention alternatives only as an optional swap after the concrete plan.",
+      "added_after_iteration": 3
+    }
+  ],
+  "log": [
+    {
+      "after_iteration": 0,
+      "timestamp": "2026-09-26T00:56:25.429369+00:00",
+      "n_failures_seen": 6,
+      "failure_analysis": "Three recurring root causes across all six responses:\n\n1) Library verification is skipped. In 4 of 6 traces the agent emitted plans with named exercises without any look_up_exercise call (deterministic \"unverified_plan_exercises\" violations), and in one case invented a non-canonical variant name that differed from the name returned by history. In the logging case, it fired the same failing log_set three times before ever looking up the name, instead of looking up first and retrying once with the canonical name.\n\n2) Unjustified \"heavy\" prescriptions when there is no data. With empty history, unknown experience, no prior data for the target lift, or after a layoff, the agent still prescribed multiple heavy barbell compounds and high set counts with no starting-light caveat, no RPE/autoregulation, no warm-up note. It also never plainly told the user \"I have no history for you, so this is a generic starting point.\"\n\n3) Summary contradicts or misstates the plan/trace: claiming \"moderate intensity\" while tagging lifts heavy, claiming chest/arms focus while listing only back movements, misstating recency (\"yesterday\" when logged 3 days ago), and not flagging limitations (lookup returned no matches, no load anchors). One response over-corrected into emitting an empty plan, answering nothing.",
+      "added": [
+        "Before emit_plan, call look_up_exercise for every exercise you intend to list or log, and use the exact canonical name returned. Never guess or invent a variant name. If a tool rejects a name, do not retry the same call — look it up first, then retry once with the confirmed name, and tell the user if no match exists.",
+        "When history is empty, or contains no data for the muscle groups/lifts you're programming, or shows a layoff, prescribe conservatively: keep total working sets modest, avoid labeling any lift \"heavy\", give self-regulating load guidance (e.g. RPE or reps-in-reserve) plus a warm-up and start-light note, and say plainly in the summary that you have no data to anchor loads to.",
+        "Before emitting, re-read your summary against your exercise list and the tool results: intensity labels, muscle groups trained, and any recency claim (\"yesterday\", \"last session\") must match exactly what you listed and what history returned. Always deliver something actionable — if the request is vague, emit a sensible default plan plus one or two specific narrowing questions rather than an empty plan."
+      ],
+      "rejected_by_lint": [],
+      "attempts": 1,
+      "note": "",
+      "extractor_model": "claude-opus-5",
+      "input_tokens": 9983,
+      "output_tokens": 868
+    },
+    {
+      "after_iteration": 1,
+      "timestamp": "2026-09-26T01:00:58.144997+00:00",
+      "n_failures_seen": 2,
+      "failure_analysis": "Both responses skipped required tool steps and let an obstacle derail the whole task.\n\nResponse 1: the user explicitly reported completed sets, but because look_up_exercise returned no match, the agent abandoned log_set entirely (0 of 3 sets logged) — treating a failed lookup as a reason to drop the user's primary request rather than attempting the log with the user's stated name and disclosing any failure. It then contradicted its own caution by prescribing four exercises it never looked up, so the plan's exercises were unverified while the logging was refused — an inconsistent standard. It also burned lookups on muscle-group/partial-word queries rather than exercise names.\n\nResponse 2: the request was unsafe, so the agent went straight to refusal with zero tool calls — no history check, no lookup — and emitted an empty exercise list. A safety objection is correct, but it doesn't exempt the agent from the mandatory pre-plan history call or from delivering a safe alternative plan with actual exercises. Pushback replaced the deliverable instead of shaping it.\n\nRecurring root cause: when something blocks the happy path (missing library entry, unsafe request), the agent drops required workflow steps and required outputs instead of completing them and disclosing the issue.",
+      "added": [
+        "When the user reports completed work, logging it is a primary deliverable: call log_set once per reported set even if lookup returned no match — use the user's stated name — and only report a logging failure after the tool itself rejects it. Never silently skip logging because of an unrelated obstacle.",
+        "An unsafe, extreme, or vague request never exempts you from the workflow: still call get_recent_history before planning and look_up_exercise for each exercise, then emit a plan that contains a concrete safer alternative with real exercises. Voice your safety objection in the summary, not by emitting an empty exercise list.",
+        "Query look_up_exercise with full exercise names and plausible naming variants only — not muscle groups, equipment, or word fragments. After about two failed variants, stop searching, tell the user no library match exists, and apply the same verification standard to every exercise you plan as to the one you failed to find."
+      ],
+      "rejected_by_lint": [],
+      "attempts": 1,
+      "note": "",
+      "extractor_model": "claude-opus-5",
+      "input_tokens": 3558,
+      "output_tokens": 789
+    },
+    {
+      "after_iteration": 2,
+      "timestamp": "2026-09-26T01:09:59.545765+00:00",
+      "n_failures_seen": 0,
+      "failure_analysis": "",
+      "added": [],
+      "rejected_by_lint": [],
+      "attempts": 0,
+      "note": "no train-split outputs below 3.5; nothing to learn from",
+      "extractor_model": "claude-opus-5",
+      "input_tokens": 0,
+      "output_tokens": 0
+    },
+    {
+      "after_iteration": 3,
+      "timestamp": "2026-09-26T01:15:11.795834+00:00",
+      "n_failures_seen": 2,
+      "failure_analysis": "Both failures are re-instances of existing lessons, but with a concrete gap.\n\nResponse 1: a lookup returned zero matches, and instead of trying a plausible naming variant or dropping/substituting the exercise, the agent silently prescribed the unverified name and described it in the summary as if confirmed. Root cause: the agent treats lookup as a checkbox, not as a gate — it never inspects the result before composing the plan, and never substitutes a confirmed alternative from a returned match list (the \"row\" variant, or the confirmed deadlift it had already looked up but discarded). It also ran a lookup it never used, showing no linkage between results and plan contents.\n\nResponse 2: the user asked a direct question answerable from history, and the agent emitted an empty plan offering a menu of options. Root cause: treating clarification as a substitute for a recommendation, and failing to convert retrieved loads into prescribed working weights. History was used descriptively, not prescriptively — no progression off the logged weights/reps.\n\nRecurring theme: tool results are collected but not actually used to determine plan content — neither the failed lookup nor the retrieved loads changed what was emitted.",
+      "added": [
+        "Treat each lookup result as a gate on plan content: if a query returns zero matches, either requery one plausible variant or substitute a name that was actually returned by a successful lookup. Never carry an unmatched name into the plan, and note any substitution in the summary.",
+        "When history contains loads and reps for a lift you are programming, prescribe concrete working weights anchored to those numbers with a stated progression (e.g. repeat, small increase, or back-off percentage). Descriptive references to past sessions without prescribed loads are not personalization.",
+        "Never emit a plan whose exercise list is empty, and never replace a recommendation with a menu of options for the user to pick from. Choose the option best supported by history, prescribe it fully, and mention alternatives only as an optional swap after the concrete plan."
+      ],
+      "rejected_by_lint": [],
+      "attempts": 1,
+      "note": "",
+      "extractor_model": "claude-opus-5",
+      "input_tokens": 4889,
+      "output_tokens": 732
+    }
+  ]
+}

@@ -1,0 +1,84 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 990 264" width="100%" font-family="-apple-system, Helvetica, Arial, sans-serif"><rect width="100%" height="100%" fill="#ffffff"/><text x="40" y="12" font-size="13" font-weight="600" fill="#111">Train: mean judge score (1-5), by iteration</text>
+<line x1="40" x2="310" y1="205.0" y2="205.0" stroke="#e5e7eb"/>
+<text x="34" y="209.0" font-size="10" text-anchor="end" fill="#6b7280">2.7</text>
+<line x1="40" x2="310" y1="160.0" y2="160.0" stroke="#e5e7eb"/>
+<text x="34" y="164.0" font-size="10" text-anchor="end" fill="#6b7280">3.1</text>
+<line x1="40" x2="310" y1="115.0" y2="115.0" stroke="#e5e7eb"/>
+<text x="34" y="119.0" font-size="10" text-anchor="end" fill="#6b7280">3.5</text>
+<line x1="40" x2="310" y1="70.0" y2="70.0" stroke="#e5e7eb"/>
+<text x="34" y="74.0" font-size="10" text-anchor="end" fill="#6b7280">3.9</text>
+<line x1="40" x2="310" y1="25.0" y2="25.0" stroke="#e5e7eb"/>
+<text x="34" y="29.0" font-size="10" text-anchor="end" fill="#6b7280">4.3</text>
+<text x="40.0" y="222" font-size="10" text-anchor="middle" fill="#6b7280">0</text>
+<text x="107.5" y="222" font-size="10" text-anchor="middle" fill="#6b7280">1</text>
+<text x="175.0" y="222" font-size="10" text-anchor="middle" fill="#6b7280">2</text>
+<text x="242.5" y="222" font-size="10" text-anchor="middle" fill="#6b7280">3</text>
+<text x="310.0" y="222" font-size="10" text-anchor="middle" fill="#6b7280">4</text>
+<rect x="40" y="124.8" width="270" height="57.3" fill="#9ca3af" opacity="0.25"/>
+<circle cx="40.0" cy="140.5" r="4" fill="none" stroke="#6b7280"/>
+<circle cx="40.0" cy="158.6" r="4" fill="none" stroke="#6b7280"/>
+<circle cx="40.0" cy="169.1" r="4" fill="none" stroke="#6b7280"/>
+<circle cx="40.0" cy="151.0" r="4" fill="none" stroke="#6b7280"/>
+<circle cx="40.0" cy="148.1" r="4" fill="none" stroke="#6b7280"/>
+<polyline points="40.0,140.5 107.5,75.6 175.0,67.9 242.5,47.9 310.0,50.8" fill="none" stroke="#2563eb" stroke-width="2"/>
+<circle cx="40.0" cy="140.5" r="3" fill="#2563eb"/>
+<circle cx="107.5" cy="75.6" r="3" fill="#2563eb"/>
+<circle cx="175.0" cy="67.9" r="3" fill="#2563eb"/>
+<circle cx="242.5" cy="47.9" r="3" fill="#2563eb"/>
+<circle cx="310.0" cy="50.8" r="3" fill="#2563eb"/>
+<text x="370" y="12" font-size="13" font-weight="600" fill="#111">Held-out: mean judge score (1-5), by iteration</text>
+<line x1="370" x2="640" y1="205.0" y2="205.0" stroke="#e5e7eb"/>
+<text x="364" y="209.0" font-size="10" text-anchor="end" fill="#6b7280">3.0</text>
+<line x1="370" x2="640" y1="160.0" y2="160.0" stroke="#e5e7eb"/>
+<text x="364" y="164.0" font-size="10" text-anchor="end" fill="#6b7280">3.4</text>
+<line x1="370" x2="640" y1="115.0" y2="115.0" stroke="#e5e7eb"/>
+<text x="364" y="119.0" font-size="10" text-anchor="end" fill="#6b7280">3.8</text>
+<line x1="370" x2="640" y1="70.0" y2="70.0" stroke="#e5e7eb"/>
+<text x="364" y="74.0" font-size="10" text-anchor="end" fill="#6b7280">4.2</text>
+<line x1="370" x2="640" y1="25.0" y2="25.0" stroke="#e5e7eb"/>
+<text x="364" y="29.0" font-size="10" text-anchor="end" fill="#6b7280">4.5</text>
+<text x="370.0" y="222" font-size="10" text-anchor="middle" fill="#6b7280">0</text>
+<text x="437.5" y="222" font-size="10" text-anchor="middle" fill="#6b7280">1</text>
+<text x="505.0" y="222" font-size="10" text-anchor="middle" fill="#6b7280">2</text>
+<text x="572.5" y="222" font-size="10" text-anchor="middle" fill="#6b7280">3</text>
+<text x="640.0" y="222" font-size="10" text-anchor="middle" fill="#6b7280">4</text>
+<rect x="370" y="110.9" width="270" height="70.6" fill="#9ca3af" opacity="0.25"/>
+<circle cx="370.0" cy="138.7" r="4" fill="none" stroke="#6b7280"/>
+<circle cx="370.0" cy="172.1" r="4" fill="none" stroke="#6b7280"/>
+<circle cx="370.0" cy="138.7" r="4" fill="none" stroke="#6b7280"/>
+<circle cx="370.0" cy="144.6" r="4" fill="none" stroke="#6b7280"/>
+<circle cx="370.0" cy="136.8" r="4" fill="none" stroke="#6b7280"/>
+<polyline points="370.0,138.7 437.5,91.7 505.0,66.2 572.5,99.5 640.0,48.5" fill="none" stroke="#ea580c" stroke-width="2"/>
+<circle cx="370.0" cy="138.7" r="3" fill="#ea580c"/>
+<circle cx="437.5" cy="91.7" r="3" fill="#ea580c"/>
+<circle cx="505.0" cy="66.2" r="3" fill="#ea580c"/>
+<circle cx="572.5" cy="99.5" r="3" fill="#ea580c"/>
+<circle cx="640.0" cy="48.5" r="3" fill="#ea580c"/>
+<text x="700" y="12" font-size="13" font-weight="600" fill="#111">Rule violations (no LLM), by iteration</text>
+<line x1="700" x2="970" y1="205.0" y2="205.0" stroke="#e5e7eb"/>
+<text x="694" y="209.0" font-size="10" text-anchor="end" fill="#6b7280">0</text>
+<line x1="700" x2="970" y1="160.0" y2="160.0" stroke="#e5e7eb"/>
+<text x="694" y="164.0" font-size="10" text-anchor="end" fill="#6b7280">2</text>
+<line x1="700" x2="970" y1="115.0" y2="115.0" stroke="#e5e7eb"/>
+<text x="694" y="119.0" font-size="10" text-anchor="end" fill="#6b7280">4</text>
+<line x1="700" x2="970" y1="70.0" y2="70.0" stroke="#e5e7eb"/>
+<text x="694" y="74.0" font-size="10" text-anchor="end" fill="#6b7280">6</text>
+<line x1="700" x2="970" y1="25.0" y2="25.0" stroke="#e5e7eb"/>
+<text x="694" y="29.0" font-size="10" text-anchor="end" fill="#6b7280">8</text>
+<text x="700.0" y="222" font-size="10" text-anchor="middle" fill="#6b7280">0</text>
+<text x="767.5" y="222" font-size="10" text-anchor="middle" fill="#6b7280">1</text>
+<text x="835.0" y="222" font-size="10" text-anchor="middle" fill="#6b7280">2</text>
+<text x="902.5" y="222" font-size="10" text-anchor="middle" fill="#6b7280">3</text>
+<text x="970.0" y="222" font-size="10" text-anchor="middle" fill="#6b7280">4</text>
+<polyline points="700.0,92.5 767.5,115.0 835.0,47.5 902.5,137.5 970.0,92.5" fill="none" stroke="#2563eb" stroke-width="2"/>
+<circle cx="700.0" cy="92.5" r="3" fill="#2563eb"/>
+<circle cx="767.5" cy="115.0" r="3" fill="#2563eb"/>
+<circle cx="835.0" cy="47.5" r="3" fill="#2563eb"/>
+<circle cx="902.5" cy="137.5" r="3" fill="#2563eb"/>
+<circle cx="970.0" cy="92.5" r="3" fill="#2563eb"/>
+<polyline points="700.0,160.0 767.5,160.0 835.0,160.0 902.5,182.5 970.0,182.5" fill="none" stroke="#ea580c" stroke-width="2"/>
+<circle cx="700.0" cy="160.0" r="3" fill="#ea580c"/>
+<circle cx="767.5" cy="160.0" r="3" fill="#ea580c"/>
+<circle cx="835.0" cy="160.0" r="3" fill="#ea580c"/>
+<circle cx="902.5" cy="182.5" r="3" fill="#ea580c"/>
+<circle cx="970.0" cy="182.5" r="3" fill="#ea580c"/><text x="20" y="252" font-size="11" fill="#374151"><tspan fill="#2563eb">&#9679; train (10 prompts)</tspan>   <tspan dx="16" fill="#ea580c">&#9679; held-out (5 prompts)</tspan><tspan dx="16" fill="#6b7280">&#9675; no-lessons replicate runs</tspan><tspan dx="16" fill="#6b7280">grey band = baseline &#177; noise floor</tspan></text></svg>

@@ -1,0 +1,115 @@
+{
+  "lessons": [
+    {
+      "id": 1,
+      "text": "Resolve every exercise name through look_up_exercise before it appears in a plan or a log_set call — including names the user supplied and ones that seem obvious. Use the exact canonical name returned; if a search returns no match, search related terms or muscle groups rather than guessing, and tell the user when a movement they want isn't available.",
+      "added_after_iteration": 0
+    },
+    {
+      "id": 2,
+      "text": "When get_recent_history returns no sets, say so plainly in the summary, state that loads are unanchored starting estimates, and prescribe conservative intensity with form/ramp-up guidance instead of \"heavy\" top sets. Don't infer experience level from an empty log; ask about goals, equipment, or current working weights instead.",
+      "added_after_iteration": 0
+    },
+    {
+      "id": 3,
+      "text": "Always deliver a usable plan in emit_plan — never an empty exercise list and never a promise to plan later. If the request is unsafe or vague, emit the safer/best-guess version with your caveats and questions in the summary. When referencing history, compute recency from the logged dates rather than assuming, and cite actual weights and reps to anchor prescriptions.",
+      "added_after_iteration": 0
+    },
+    {
+      "id": 4,
+      "text": "Never stall a plan on clarifying questions when history or the request already supports a reasonable default. Choose the default (e.g., the least-recently-trained muscle group or a balanced full-body session), emit it as a complete plan with loads and reps, and put your assumptions and at most one or two questions in the summary as optional refinements.",
+      "added_after_iteration": 1
+    },
+    {
+      "id": 5,
+      "text": "Before prescribing intensity for any muscle group, explicitly check when the history shows it was last trained and state that in the plan. If it was worked very recently, either lower volume/load, offer a lighter or technique-focused option, or flag the recovery tradeoff — never prescribe a new top set as if the area were fully rested.",
+      "added_after_iteration": 1
+    },
+    {
+      "id": 6,
+      "text": "Don't assert \"N days ago\" from logged dates unless you can anchor today's date. Prefer quoting the logged dates themselves, or hedge the interval (\"your most recent session, dated X\"). If recency drives the recommendation and the reference date is uncertain, say so and give the user a way to correct it.",
+      "added_after_iteration": 1
+    },
+    {
+      "id": 7,
+      "text": "Never call emit_plan until every exercise name in it — including alternates or swaps mentioned in notes — has been returned by a look_up_exercise call in this conversation. Batch the lookups in one step after checking history, and copy the canonical names verbatim into the plan.",
+      "added_after_iteration": 2
+    },
+    {
+      "id": 8,
+      "text": "Honor the user's stated scope constraints (time, intensity, equipment, body part). If they ask for something short or easy, keep the session to a few movements and sets; if you deviate, say why in the summary rather than silently over-prescribing volume.",
+      "added_after_iteration": 2
+    },
+    {
+      "id": 9,
+      "text": "Before emitting, re-read your summary against the actual tool output: every claim about what was or wasn't trained must match the logged entries. Never state a muscle group is untrained while also citing a recent session that worked it.",
+      "added_after_iteration": 2
+    }
+  ],
+  "log": [
+    {
+      "after_iteration": 0,
+      "timestamp": "2026-09-26T17:49:22.970777+00:00",
+      "n_failures_seen": 6,
+      "failure_analysis": "Three patterns recur:\n\n1) Skipping library verification. In responses 1 and 6 the agent emitted plans naming 5 exercises with zero look_up_exercise calls, producing non-canonical names (\"Bent Over Row\", \"Goblet Squats\"). In response 4 it called log_set with an unverified user-supplied name, causing a tool error, and then had to retry. Root cause: the agent treats \"common\" exercise names as certain instead of resolving every name through the library before it appears in a plan or a log.\n\n2) Empty history is retrieved but never acknowledged or acted on. Responses 1, 2, 4, 6 all got count:0 and then wrote confident plans — some prescribing \"@ heavy\" compound barbell work — without saying loads are unanchored guesses, without asking about experience/equipment, and in one case inventing a characterization (\"new to structured training\") from absent data. This drove both the personalization and safety scores down. Response 5 never checked history at all, and so couldn't use the absence of a training base as an argument.\n\n3) Emitting an empty or non-responsive plan. Responses 3 and 5 called emit_plan with zero exercises — one punting back with options and promising a plan later, the other refusing outright without offering a safer alternative. Also in 3, history dates were misread (\"yesterday\" for sets 2-3 days old), so the recovery reasoning was wrong.",
+      "added": [
+        "Resolve every exercise name through look_up_exercise before it appears in a plan or a log_set call — including names the user supplied and ones that seem obvious. Use the exact canonical name returned; if a search returns no match, search related terms or muscle groups rather than guessing, and tell the user when a movement they want isn't available.",
+        "When get_recent_history returns no sets, say so plainly in the summary, state that loads are unanchored starting estimates, and prescribe conservative intensity with form/ramp-up guidance instead of \"heavy\" top sets. Don't infer experience level from an empty log; ask about goals, equipment, or current working weights instead.",
+        "Always deliver a usable plan in emit_plan — never an empty exercise list and never a promise to plan later. If the request is unsafe or vague, emit the safer/best-guess version with your caveats and questions in the summary. When referencing history, compute recency from the logged dates rather than assuming, and cite actual weights and reps to anchor prescriptions."
+      ],
+      "rejected_by_lint": [],
+      "attempts": 1,
+      "note": "",
+      "extractor_model": "claude-opus-5",
+      "input_tokens": 8918,
+      "output_tokens": 879
+    },
+    {
+      "after_iteration": 1,
+      "timestamp": "2026-09-26T17:53:52.235212+00:00",
+      "n_failures_seen": 2,
+      "failure_analysis": "Both failures involve mishandling recent-history data even though history was correctly fetched.\n\nResponse 1: the agent had complete, answerable history but emitted an empty exercise list and asked three clarifying questions instead. Root cause: treating ambiguity about split/goals as a blocker rather than defaulting to a reasonable plan with caveats. Also ignored the recency signal (lower body 3 days rested vs upper 2) that would have picked the session.\n\nResponse 2: the agent converted logged dates into \"days ago\" using a wrong assumed current date, overstating gaps by 2 days. This wasn't just cosmetic — it hid that the user squatted heavily the previous day, so no recovery caveat or deload option was offered before prescribing a new top set. Root cause: confidently asserting derived relative timings without grounding the reference date, and not treating \"trained this muscle very recently\" as a safety check.\n\nRecurring patterns: (a) not converting history into an actual decision, (b) unreliable date arithmetic stated with false confidence, (c) skipping an explicit recovery/freshness check on the target muscle group before prescribing intensity.",
+      "added": [
+        "Never stall a plan on clarifying questions when history or the request already supports a reasonable default. Choose the default (e.g., the least-recently-trained muscle group or a balanced full-body session), emit it as a complete plan with loads and reps, and put your assumptions and at most one or two questions in the summary as optional refinements.",
+        "Before prescribing intensity for any muscle group, explicitly check when the history shows it was last trained and state that in the plan. If it was worked very recently, either lower volume/load, offer a lighter or technique-focused option, or flag the recovery tradeoff — never prescribe a new top set as if the area were fully rested.",
+        "Don't assert \"N days ago\" from logged dates unless you can anchor today's date. Prefer quoting the logged dates themselves, or hedge the interval (\"your most recent session, dated X\"). If recency drives the recommendation and the reference date is uncertain, say so and give the user a way to correct it."
+      ],
+      "rejected_by_lint": [],
+      "attempts": 1,
+      "note": "",
+      "extractor_model": "claude-opus-5",
+      "input_tokens": 4314,
+      "output_tokens": 777
+    },
+    {
+      "after_iteration": 2,
+      "timestamp": "2026-09-26T17:58:35.169831+00:00",
+      "n_failures_seen": 2,
+      "failure_analysis": "Both failures share the same root cause: the agent called get_recent_history and then jumped straight to emit_plan, never calling look_up_exercise for any of the exercises it prescribed (6 unverified in one case, 4 in the other). This triggered the deterministic rule violation in both and tanked tool_use_correctness. Lesson 1 already tells the agent to resolve names, but it is apparently treated as optional for \"obvious\" compound lifts; it needs to be made procedural — a mandatory step between history and emit_plan, covering alternates/swaps mentioned in notes too.\n\nSecondary issues: (a) Response 1 ignored the user's explicit scope constraint (\"quick\") and prescribed six heavy barbell compounds, ~16 sets, to a user with zero history — a mismatch with the request and mildly aggressive given unknown experience. (b) Response 2 contained a self-contradiction in the summary (claiming lower body hadn't been trained right after citing a squat session 1 day before), showing the summary wasn't checked against the cited history data.",
+      "added": [
+        "Never call emit_plan until every exercise name in it — including alternates or swaps mentioned in notes — has been returned by a look_up_exercise call in this conversation. Batch the lookups in one step after checking history, and copy the canonical names verbatim into the plan.",
+        "Honor the user's stated scope constraints (time, intensity, equipment, body part). If they ask for something short or easy, keep the session to a few movements and sets; if you deviate, say why in the summary rather than silently over-prescribing volume.",
+        "Before emitting, re-read your summary against the actual tool output: every claim about what was or wasn't trained must match the logged entries. Never state a muscle group is untrained while also citing a recent session that worked it."
+      ],
+      "rejected_by_lint": [],
+      "attempts": 1,
+      "note": "",
+      "extractor_model": "claude-opus-5",
+      "input_tokens": 4545,
+      "output_tokens": 679
+    },
+    {
+      "after_iteration": 3,
+      "timestamp": "2026-09-26T18:03:54.672827+00:00",
+      "n_failures_seen": 0,
+      "failure_analysis": "",
+      "added": [],
+      "rejected_by_lint": [],
+      "attempts": 0,
+      "note": "no train-split outputs below 3.5; nothing to learn from",
+      "extractor_model": "claude-opus-5",
+      "input_tokens": 0,
+      "output_tokens": 0
+    }
+  ]
+}

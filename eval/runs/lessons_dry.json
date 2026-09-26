@@ -1,0 +1,38 @@
+{
+  "lessons": [
+    {
+      "id": 1,
+      "text": "Before emitting a plan, call look_up_exercise for EVERY exercise you intend to list — not just ones the user named or ones that sound unusual — and use the canonical name returned. If a lookup returns no matches, retry with a different term or muscle group; never repeat an identical failing tool call, and never log or prescribe a name the library hasn't confirmed.",
+      "added_after_iteration": 0
+    },
+    {
+      "id": 2,
+      "text": "State the evidence basis plainly in the summary. If history is empty, or contains nothing relevant to the requested body part, say so explicitly and note that loads are general starting suggestions the user should self-select. Never write a summary that implies knowledge of the user's capacity you don't have.",
+      "added_after_iteration": 0
+    },
+    {
+      "id": 3,
+      "text": "When history is unknown, empty, or the user reports detraining, keep intensity conservative: avoid prescribing \"heavy\" work on multiple compounds in one session, keep total working sets modest, and include a warm-up/technique-first caution. Ensure the summary's stated intensity, focus and recovery rationale match the exercises actually listed.",
+      "added_after_iteration": 0
+    }
+  ],
+  "log": [
+    {
+      "after_iteration": 0,
+      "timestamp": "2026-09-24T19:24:36.825929+00:00",
+      "n_failures_seen": 7,
+      "failure_analysis": "Three patterns recur across nearly all 7 responses:\n\n1. Systematic failure to verify exercise names (Responses 1, 4, 6, 7 each triggered \"N_unverified_plan_exercises\"; Response 5 tried to log an unverified name three times). The agent calls look_up_exercise for the one exercise the user named, or not at all, then fills the rest of the plan from memory with plausible-but-non-canonical names (\"Squat\", \"Leg Curl\", \"Calf Raise\"). Root cause: it treats verification as needed only for unfamiliar names, and it repeats identical failing tool calls instead of following the error's instruction.\n\n2. Failure to state the data situation. When history came back empty (1, 2, 4, 5, 6) the summary never says \"no history on file, so loads are self-selected\"; when history existed but was irrelevant (7) it never said there was no leg data. When history was rich (3), it retrieved data then discarded it and punted with a clarifying question and an EMPTY exercise list instead of answering a directly answerable question.\n\n3. Unsafe/inconsistent prescriptions for unknown lifters: \"@heavy\" compound work, 16-17 working sets, no warm-up/start-conservative caution (2, 4, 7), plus summaries that contradict the exercise list (5: \"chest and legs\"/\"let your back recover\" while listing two back movements; 7: \"moderate intensity\" while prescribing heavy).",
+      "added": [
+        "Before emitting a plan, call look_up_exercise for EVERY exercise you intend to list — not just ones the user named or ones that sound unusual — and use the canonical name returned. If a lookup returns no matches, retry with a different term or muscle group; never repeat an identical failing tool call, and never log or prescribe a name the library hasn't confirmed.",
+        "State the evidence basis plainly in the summary. If history is empty, or contains nothing relevant to the requested body part, say so explicitly and note that loads are general starting suggestions the user should self-select. Never write a summary that implies knowledge of the user's capacity you don't have.",
+        "When history is unknown, empty, or the user reports detraining, keep intensity conservative: avoid prescribing \"heavy\" work on multiple compounds in one session, keep total working sets modest, and include a warm-up/technique-first caution. Ensure the summary's stated intensity, focus and recovery rationale match the exercises actually listed."
+      ],
+      "rejected_by_lint": [],
+      "attempts": 1,
+      "note": "",
+      "extractor_model": "claude-opus-5",
+      "input_tokens": 11637,
+      "output_tokens": 889
+    }
+  ]
+}

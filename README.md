@@ -102,6 +102,21 @@ Two things worth knowing before wiring a client against this:
   or failure is communicated by which event type shows up, not by the
   status code.
 
+## Self-improvement loop (`eval/`)
+
+An experiment built on top of this agent: can it improve itself in-context —
+judge its own outputs against a rubric, extract lessons from failures, feed
+them back into its prompt? On a Haiku 4.5 version of this agent, two
+independent runs of the loop each raised an LLM judge's mean score by roughly
++0.8 to +1.15 (out of 5) over measured noise, including on held-out prompts —
+but as a one-step jump rather than a climb, with the two runs improving
+*different* things and no human-labeled validation. Pre-registered success
+criteria, a negative control, and everything that went wrong are in
+**[eval/WRITEUP.md](eval/WRITEUP.md)**. The deployed agent above is untouched
+by it.
+
+![Self-improvement loop trend](eval/runs/trend_loop.svg)
+
 ## Project layout
 
 ```
@@ -115,6 +130,7 @@ app/
 tests/        # Unit tests, HTTP-level tests, fake-client error simulation,
               # and one live-API integration test (isolated per-test SQLite file)
 data/         # Seed data source (exercises.json)
+eval/         # Self-improvement loop experiment (see eval/WRITEUP.md)
 Dockerfile              # Single-stage build, non-root runtime user
 docker-entrypoint.sh    # Fixes volume ownership, then execs uvicorn as non-root
 fly.toml                # Fly.io app config (region, volume, health check, sizing)

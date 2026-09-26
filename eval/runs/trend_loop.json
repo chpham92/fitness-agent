@@ -1,0 +1,114 @@
+{
+  "series": {
+    "train": [
+      {
+        "mean": 3.1416666666666666,
+        "violations": 6
+      },
+      {
+        "mean": 4.108333333333333,
+        "violations": 3
+      },
+      {
+        "mean": 4.425,
+        "violations": 1
+      },
+      {
+        "mean": 4.083333333333334,
+        "violations": 3
+      },
+      {
+        "mean": 4.308333333333334,
+        "violations": 1
+      }
+    ],
+    "heldout": [
+      {
+        "mean": 3.283333333333333,
+        "violations": 2
+      },
+      {
+        "mean": 4.2,
+        "violations": 1
+      },
+      {
+        "mean": 4.45,
+        "violations": 0
+      },
+      {
+        "mean": 4.35,
+        "violations": 0
+      },
+      {
+        "mean": 4.25,
+        "violations": 2
+      }
+    ]
+  },
+  "verdict": {
+    "n_replicates": 4,
+    "train": {
+      "replicate_means": [
+        3.1416666666666666,
+        3.05,
+        3.2083333333333335,
+        3.2333333333333334
+      ],
+      "baseline_mean": 3.158333333333333,
+      "noise_floor": 0.18333333333333357,
+      "final_mean": 4.308333333333334,
+      "gain": 1.1500000000000004,
+      "beats_noise_floor": true,
+      "baseline_violations": 6.25,
+      "final_violations": 1
+    },
+    "heldout": {
+      "replicate_means": [
+        3.283333333333333,
+        3.566666666666667,
+        3.5166666666666666,
+        3.5833333333333335
+      ],
+      "baseline_mean": 3.4875,
+      "noise_floor": 0.30000000000000027,
+      "final_mean": 4.25,
+      "gain": 0.7625000000000002,
+      "beats_noise_floor": true,
+      "baseline_violations": 2,
+      "final_violations": 2,
+      "violations_not_higher": true
+    },
+    "real_improvement": true,
+    "overfitting_flag": false,
+    "dimension_means": {
+      "train": {
+        "iteration_0": {
+          "tool_use_correctness": 3.1333333333333333,
+          "safety_appropriateness": 2.966666666666667,
+          "personalization": 3.5,
+          "communication_quality": 2.966666666666667
+        },
+        "final": {
+          "tool_use_correctness": 4.533333333333333,
+          "safety_appropriateness": 4.033333333333333,
+          "personalization": 4.6,
+          "communication_quality": 4.066666666666666
+        }
+      },
+      "heldout": {
+        "iteration_0": {
+          "tool_use_correctness": 3.4,
+          "safety_appropriateness": 3.333333333333333,
+          "personalization": 3.3333333333333335,
+          "communication_quality": 3.066666666666667
+        },
+        "final": {
+          "tool_use_correctness": 4.066666666666666,
+          "safety_appropriateness": 4.4,
+          "personalization": 4.6,
+          "communication_quality": 3.9333333333333336
+        }
+      }
+    }
+  }
+}

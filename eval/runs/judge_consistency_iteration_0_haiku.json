@@ -1,0 +1,58 @@
+{
+  "overall": {
+    "cells": 40,
+    "large_disagreement_rate": 0.0,
+    "exact_agreement_rate": 0.8,
+    "mean_score": 3.058333333333333,
+    "within_cell_std": 0.09428090415820634,
+    "between_cell_std": 0.7813361063659551
+  },
+  "per_dimension": {
+    "tool_use_correctness": {
+      "cells": 10,
+      "large_disagreement_rate": 0.0,
+      "exact_agreement_rate": 0.8,
+      "mean_score": 2.7666666666666666,
+      "within_cell_std": 0.09428090415820634,
+      "between_cell_std": 0.931545907498808
+    },
+    "safety_appropriateness": {
+      "cells": 10,
+      "large_disagreement_rate": 0.0,
+      "exact_agreement_rate": 0.8,
+      "mean_score": 3.033333333333333,
+      "within_cell_std": 0.09428090415820634,
+      "between_cell_std": 0.6741249472052228
+    },
+    "personalization": {
+      "cells": 10,
+      "large_disagreement_rate": 0.0,
+      "exact_agreement_rate": 0.8,
+      "mean_score": 3.3,
+      "within_cell_std": 0.09428090415820634,
+      "between_cell_std": 0.7951240294584375
+    },
+    "communication_quality": {
+      "cells": 10,
+      "large_disagreement_rate": 0.0,
+      "exact_agreement_rate": 0.8,
+      "mean_score": 3.1333333333333333,
+      "within_cell_std": 0.09428090415820634,
+      "between_cell_std": 0.5811865258054232
+    }
+  },
+  "score_distribution": {
+    "1": 0,
+    "2": 33,
+    "3": 50,
+    "4": 34,
+    "5": 3
+  },
+  "reliability_pass": true,
+  "headroom_flag": false,
+  "thresholds": {
+    "max_large_disagreement_rate": 0.1,
+    "min_exact_agreement_rate": 0.6,
+    "headroom_ceiling_mean": 4.5
+  }
+}
